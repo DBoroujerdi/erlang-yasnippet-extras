@@ -1,0 +1,25 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: OTP Application
+# key: otp_app
+# --
+-module(${1:`(car (last (split-string (file-name-sans-extension (buffer-file-name (window-buffer (minibuffer-selected-window)))) "/")))`}).
+
+-behaviour(application).
+
+%% Application callbacks
+-export([start/2, stop/1]).
+
+start(_StartType, _StartArgs) ->
+    case 'TopSupervisor':start_link() of
+        {ok, Pid} ->
+            {ok, Pid};
+        Error ->
+            Error
+    end.
+
+stop(_State) ->
+    ok.
+
+%%%=============================================================================
+%%% Internal functions
+%%%=============================================================================
