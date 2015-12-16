@@ -1,0 +1,20 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Small Server
+# key: s_server
+# --
+-module(${1:`(car (last (split-string (file-name-sans-extension (buffer-file-name (window-buffer (minibuffer-selected-window)))) "/")))`}).
+
+-export([start/0, init/1]).
+
+
+start() ->
+    spawn(${0:`(car (last (split-string (file-name-sans-extension (buffer-file-name (window-buffer (minibuffer-selected-window)))) "/")))`}, init, [self()]).
+
+init(From) ->
+    loop(From).
+
+loop(From) ->
+    receive
+        _ ->
+            loop(From)
+    end.
